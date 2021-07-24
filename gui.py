@@ -1324,7 +1324,7 @@ class Ui_MainWindow(object):
                 self.min_v.setText(_translate("MainWindow", "xx V"))
                 self.avg_cell_v_label.setText(_translate("MainWindow", "Average Cell Voltage:"))
                 self.avg_cell_v.setText(_translate("MainWindow", "xx V"))
-                self.difference_label.setText(_translate("MainWindow", "Defference:"))
+                self.difference_label.setText(_translate("MainWindow", "Difference:"))
                 self.difference.setText(_translate("MainWindow", "xx V"))
                 self.battery_stats_label_8.setText(_translate("MainWindow", "Cell Voltage (millivolts)"))
                 self.alarm_label.setText(_translate("MainWindow", "Alarm"))
@@ -1359,15 +1359,21 @@ class Ui_MainWindow(object):
                         if ser.in_waiting:                        
                                 while True:
                                         line = ser.readline().decode("ascii")
+                                        if line[0] != '#':
+                                                break
                                         line = line.lstrip('#')
                                         line = line.rstrip()
                                         line = line.split(',')
-                                        line = [int(l) for l in line]
+                                        try:
+                                                line = [int(l) for l in line]
+                                        except:
+                                                break
+                                        
                                         cell_v = line[0:16]
                                         progress_bar = [int(v/42) for v in cell_v]
-                                        print(line)
-                                        print(cell_v)
-                                        print(progress_bar)
+                                        
+                                        if len(line) != 25:
+                                                break
                                         
                                         if int(line[23])>25:
                                                 self.status.setText("Charging")
@@ -1401,28 +1407,28 @@ class Ui_MainWindow(object):
                                         self.avg_cell_v.setText(f"{int(sum(cell_v)/16)} mV")
                                         self.difference.setText(f"{max(cell_v)-min(cell_v)} mV")
 
-                                        self.cell_voltage_1.setValue(progress_bar[0])
-                                        self.cell_voltage_2.setValue(progress_bar[1])
-                                        self.cell_voltage_3.setValue(progress_bar[2])
-                                        self.cell_voltage_4.setValue(progress_bar[3])
-                                        self.cell_voltage_5.setValue(progress_bar[4])
-                                        self.cell_voltage_6.setValue(progress_bar[5])
-                                        self.cell_voltage_7.setValue(progress_bar[6])
-                                        self.cell_voltage_8.setValue(progress_bar[7])
-                                        self.cell_voltage_9.setValue(progress_bar[8])
-                                        self.cell_voltage_10.setValue(progress_bar[9])
-                                        self.cell_voltage_11.setValue(progress_bar[10])
-                                        self.cell_voltage_12.setValue(progress_bar[11])
-                                        self.cell_voltage_13.setValue(progress_bar[12])
-                                        self.cell_voltage_14.setValue(progress_bar[13])                                    
-                                        self.cell_voltage_15.setValue(progress_bar[14])
-                                        self.cell_voltage_16.setValue(progress_bar[15])               
+                                        # self.cell_voltage_1.setValue(progress_bar[0])
+                                        # self.cell_voltage_2.setValue(progress_bar[1])
+                                        # self.cell_voltage_3.setValue(progress_bar[2])
+                                        # self.cell_voltage_4.setValue(progress_bar[3])
+                                        # self.cell_voltage_5.setValue(progress_bar[4])
+                                        # self.cell_voltage_6.setValue(progress_bar[5])
+                                        # self.cell_voltage_7.setValue(progress_bar[6])
+                                        # self.cell_voltage_8.setValue(progress_bar[7])
+                                        # self.cell_voltage_9.setValue(progress_bar[8])
+                                        # self.cell_voltage_10.setValue(progress_bar[9])
+                                        # self.cell_voltage_11.setValue(progress_bar[10])
+                                        # self.cell_voltage_12.setValue(progress_bar[11])
+                                        # self.cell_voltage_13.setValue(progress_bar[12])
+                                        # self.cell_voltage_14.setValue(progress_bar[13])                                    
+                                        # self.cell_voltage_15.setValue(progress_bar[14])
+                                        # self.cell_voltage_16.setValue(progress_bar[15])               
                         
                         #line = line.split(',')
                         #data = line.decode("ascii")
                         self.timeout = 0
 
-                if self.timeout >= 20:
+                if self.timeout >= 1000:
                         ser.close()
 
 def main():
