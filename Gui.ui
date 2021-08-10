@@ -95,7 +95,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Vidur</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
@@ -169,7 +169,7 @@ font: 9pt &quot;Montserrat&quot;;</string>
 font: 9pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>NMC</string>
+            <string>LFP</string>
            </property>
           </widget>
          </item>
@@ -249,7 +249,7 @@ font: 9pt &quot;Montserrat&quot;;</string>
 font: 9pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>40 Ah</string>
+            <string>80 Ah</string>
            </property>
           </widget>
          </item>
@@ -289,7 +289,7 @@ font: 9pt &quot;Montserrat&quot;;</string>
 font: 9pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>48 V</string>
+            <string>36.8 V</string>
            </property>
           </widget>
          </item>
@@ -329,7 +329,7 @@ font: 9pt &quot;Montserrat&quot;;</string>
 font: 9pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>57.6 V</string>
+            <string>51.2 V</string>
            </property>
           </widget>
          </item>
@@ -369,7 +369,7 @@ font: 9pt &quot;Montserrat&quot;;</string>
 font: 9pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>67.2 V</string>
+            <string>60.8 V</string>
            </property>
           </widget>
          </item>
@@ -1966,7 +1966,7 @@ font:  &quot;Montserrat&quot;;</string>
 font: 12pt &quot;Montserrat&quot;;</string>
            </property>
            <property name="text">
-            <string>Cell Voltage (millivolts)</string>
+            <string>Cell Voltage</string>
            </property>
            <property name="textFormat">
             <enum>Qt::AutoText</enum>

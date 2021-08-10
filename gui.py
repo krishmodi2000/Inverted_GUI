@@ -8,7 +8,7 @@ from datetime import datetime
 import sys
 import serial
 import serial.tools.list_ports
-import threading 
+import threading
 import logo
 
 global data, ser
@@ -33,6 +33,7 @@ class Ui_MainWindow(object):
                 MainWindow.showMaximized()
                 MainWindow.setMinimumSize(QtCore.QSize(1500, 1000))
                 MainWindow.setMaximumSize(QtCore.QSize(1920, 1080))
+                MainWindow.setWindowIcon(QtGui.QIcon('icon.png'))
                 palette = QtGui.QPalette()
                 brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
                 brush.setStyle(QtCore.Qt.SolidPattern)
@@ -626,14 +627,12 @@ class Ui_MainWindow(object):
                 self.top_navbar.addItem(spacerItem)
                 self.config_port = QtWidgets.QComboBox(self.centralwidget)
                 self.config_port.setObjectName("config_port")
-                self.config_port.addItems(data['port'])
                 self.top_navbar.addWidget(self.config_port)
                 spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
                 self.top_navbar.addItem(spacerItem1)
                 self.config_brate = QtWidgets.QComboBox(self.centralwidget)
                 self.config_brate.setObjectName("config_brate")
                 self.top_navbar.addWidget(self.config_brate)
-                self.config_brate.addItems(data['baud_rate'])
                 spacerItem2 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
                 self.top_navbar.addItem(spacerItem2)
                 self.time_sync = QtWidgets.QPushButton(self.centralwidget)
@@ -1557,13 +1556,20 @@ class Ui_MainWindow(object):
                 self.ax = self.canvas_1.figure.subplots()
 
                 self.ax = self.canvas_2.figure.subplots()
-                                
+                
+                self.config_port.addItems(data['port'])
+                self.config_port.setStyleSheet("font: 9pt \"Montserrat\";")
+
+                self.config_brate.addItems(data['baud_rate'])
+                self.config_brate.setStyleSheet("font: 9pt \"Montserrat\";")
+                
+
                 self.retranslateUi(MainWindow)
                 QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         def retranslateUi(self, MainWindow):
                 _translate = QtCore.QCoreApplication.translate
-                MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+                MainWindow.setWindowTitle(_translate("MainWindow", "Vidur"))
                 self.chemistry_label.setText(_translate("MainWindow", "Chemistry:"))
                 self.chemistry.setText(_translate("MainWindow", "NMC"))
                 self.cells_label.setText(_translate("MainWindow", "No. of Cells:"))
@@ -1601,9 +1607,7 @@ class Ui_MainWindow(object):
                 self.charging.setText(_translate("MainWindow", "Yes"))
                 self.discharging_label.setText(_translate("MainWindow", "Disharging:"))
                 self.discharging.setText(_translate("MainWindow", "No"))
-                date = datetime.now()
-                date = date.strftime("%d-%m-%Y")
-                self.time_sync.setText(_translate("MainWindow", f"{date}"))
+                self.time_sync.setText(_translate("MainWindow", "PushButton"))
                 self.gui_v_label.setText(_translate("MainWindow", "GUI Version:"))
                 self.gui_v.setText(_translate("MainWindow", "8239578"))
                 self.hardware_v_label.setText(_translate("MainWindow", "Hardware Version:"))
@@ -1662,6 +1666,10 @@ class Ui_MainWindow(object):
                 self.over_v_label.setText(_translate("MainWindow", "Over Voltage"))
                 self.under_v_label.setText(_translate("MainWindow", "Under Voltage"))
                 self.over_c_label.setText(_translate("MainWindow", "Over Current"))
+
+                date = datetime.now()
+                date = date.strftime("%d-%m-%Y")
+                self.time_sync.setText(_translate("MainWindow", f"{date}"))
 
         def check_serial_event(self):
                 self.timeout += 1
@@ -1759,12 +1767,15 @@ class Ui_MainWindow(object):
                         self.timeout = 0
 
                 if self.timeout >= 1000:
-                        ser.close()
+                        self.disconnected()
         
         def connected(self):
-                global ser
-                ser = serial.Serial(self.config_port.currentText(), baudrate=int(self.config_brate.currentText()), timeout=20)
-                
+                try:
+                        global ser
+                        ser = serial.Serial(self.config_port.currentText(), baudrate=int(self.config_brate.currentText()), timeout=20)
+                except:
+                        pass
+
                 if not ser.is_open:
                         ser.open()
                 
@@ -1772,6 +1783,12 @@ class Ui_MainWindow(object):
                 self.check_serial_event()
 
         def disconnected(self):
+                ser_ports = serial.tools.list_ports.comports()
+                ports = [port.name for port in ser_ports]
+                data["port"] = ports
+                self.config_port.clear()
+                self.config_port.addItems(data['port'])
+
                 if ser.is_open:
                         ser.close()
 
@@ -1781,13 +1798,19 @@ class Ui_MainWindow(object):
                         "border-radius: 15px;\n"
                         "padding: 10px;")
                         self.pushButton.setText("Connected")
-                        self.connected()
+                        try:
+                                self.connected()
+                        except:
+                                pass
                 else:
                         self.pushButton.setStyleSheet("background-color: rgb(207, 207, 207);\n"
                         "border-radius: 15px;\n"
                         "padding: 10px;")
                         self.pushButton.setText("Disconnected")
-                        self.disconnected()
+                        try:
+                                self.disconnected()
+                        except:
+                                pass
 
         def plot(self):
                 self.canvas_1.figure.clear()
