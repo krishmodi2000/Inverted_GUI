@@ -11,8 +11,11 @@ import serial.tools.list_ports
 import threading
 import json
 import logo
+import data
 
 test = 16
+
+print(data.data)
 
 class Ui_MainWindow(object):
         time = []
