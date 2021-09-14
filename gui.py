@@ -11,11 +11,8 @@ import serial.tools.list_ports
 import threading
 import json
 import logo
-import data
 
 test = 16
-
-print(data.data)
 
 class Ui_MainWindow(object):
         time = []
@@ -32,11 +29,11 @@ class Ui_MainWindow(object):
                 'port': ports,
                 'baud_rate': brate
         }
-
+        
         def setupUi(self, MainWindow):
                 MainWindow.setObjectName("MainWindow")
-                MainWindow.resize(1500, 1000)
-                MainWindow.showMaximized()
+                MainWindow.resize(1700, 900)
+                #MainWindow.showMaximized()
                 MainWindow.setMinimumSize(QtCore.QSize(1500, 1000))
                 MainWindow.setMaximumSize(QtCore.QSize(1920, 1080))
                 palette = QtGui.QPalette()
@@ -1406,7 +1403,6 @@ class Ui_MainWindow(object):
                 
                 self.config_port.clear()
                 self.config_port.addItems(self.config['port'])
-
                 if ser.is_open:
                         ser.close()
 
