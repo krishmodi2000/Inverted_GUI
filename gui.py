@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
                 MainWindow.setObjectName("MainWindow")
                 MainWindow.resize(1700, 900)
                 #MainWindow.showMaximized()
-                MainWindow.setMinimumSize(QtCore.QSize(1500, 1000))
+                MainWindow.setMinimumSize(QtCore.QSize(1280, 720))
                 MainWindow.setMaximumSize(QtCore.QSize(1920, 1080))
                 palette = QtGui.QPalette()
                 brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -1272,7 +1272,7 @@ class Ui_MainWindow(object):
                 self.min_v.setText(_translate("MainWindow", "xx V"))
                 self.avg_cell_v_label.setText(_translate("MainWindow", "Average Cell Voltage:"))
                 self.avg_cell_v.setText(_translate("MainWindow", "xx V"))
-                self.difference_label.setText(_translate("MainWindow", "Defference:"))
+                self.difference_label.setText(_translate("MainWindow", "Difference:"))
                 self.difference.setText(_translate("MainWindow", "xx V"))
                 self.battery_stats_label_8.setText(_translate("MainWindow", "Cell Voltage"))
                 
